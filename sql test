@@ -1,0 +1,68 @@
+SELECT * 
+FROM Worker 
+ORDER BY FIRST_NAME ASC;
+
+
+SELECT * 
+FROM Worker 
+ORDER BY FIRST_NAME ASC, DEPARTMENT DESC;
+
+
+SELECT * 
+FROM Worker 
+WHERE FIRST_NAME NOT IN ('Vipul', 'Satish');
+
+
+SELECT * 
+FROM Worker 
+WHERE FIRST_NAME LIKE '_h' 
+AND LENGTH(FIRST_NAME) = 6;
+
+
+SELECT COUNT(*) AS EmployeeCount
+FROM Worker
+WHERE DEPARTMENT = 'Admin';
+
+
+SELECT FIRST_NAME, LAST_NAME 
+FROM Worker 
+WHERE SALARY >= 50000 AND SALARY <= 100000;
+
+
+SELECT department, COUNT(*) AS worker_count
+FROM workers
+GROUP BY department
+ORDER BY worker_count DESC;
+
+
+SELECT salary 
+FROM (
+    SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk
+    FROM employees
+) ranked_salaries
+WHERE rnk = 5;
+
+SELECT DISTINCT e1.salary 
+FROM employees e1 
+WHERE 4 = (SELECT COUNT(DISTINCT e2.salary) FROM employees e2 WHERE e2.salary > e1.salary);
+
+
+SELECT salary
+FROM employees
+GROUP BY salary
+HAVING COUNT(*) > 1;
+
+SELECT e1.*
+FROM employees e1
+JOIN (
+    SELECT salary
+    FROM employees
+    GROUP BY salary
+    HAVING COUNT(*) > 1
+) e2 ON e1.salary = e2.salary;
+
+
+SELECT department
+FROM employees
+GROUP BY department
+HAVING COUNT(*) < 3;
